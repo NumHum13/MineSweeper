@@ -1,0 +1,55 @@
+public class MyProgram extends ConsoleProgram
+{
+
+    public void run()
+    {
+        int choose;
+        boolean book = false;
+        boolean timeMachine = false;
+        boolean key = false;
+        System.out.println("You wake up at the top of a tall mountain,\non top of a metal trapdoor.\nLooking around you see a book \nlying on its side near the cliff \nand a ladder leading down to your right.\n");
+        choose = readInt("Do you \n1: Go down the ladder. \n2: Open the metal trapdoor. \n3: Pick up the book.\n");
+        if(choose == 1)
+        {
+            ladder();
+        }
+        if(choose == 2)
+        {
+            timeMachine = trapdoor(key);
+        }
+        if(choose == 3)
+        {
+            book = book();
+        }
+    }
+    public int ladder()
+    {
+        readLine("The ladder ends on a ledge. \nOn the ledge rests a sword and \na door into the mountain \nwith a skull on it.\n");
+        int choose = readInt("1: Open the skull door. \n2: Pick up the sword.\n");
+        if(choose == 1)
+        {
+            System.out.println("Opening the skull door.");
+        }
+        if(choose == 2)
+        {
+            System.out.println("You pick up the sword and advancd toward the skull door.");
+        }
+        return 0;
+    }
+    public boolean trapdoor(boolean key)
+    {
+        if(key)
+        {
+            System.out.println("You get to the time machine");
+            return true;
+        }
+        readLine("You try to open the trapdoor but it \ndoesn't budge. Looks like it needs a key.\n");
+        return false;
+    }
+    public boolean book()
+    {
+        String pause = readLine("You pick up the book. \nIt looks important, you should keep it.\n");
+        pause = readLine("Monster attacks you and grabs the book.\n");
+        return false;
+    }
+}

@@ -28,6 +28,12 @@ public class Grid {
 			matrix[randRow][randCol].setState(true);
 		}
 	}
+	
+	public void registerClick(int x, int y)
+	{
+		System.out.println("Mouse Listened to");
+	}
+	
 	public void setLocalValue(int row, int col)
 	{
 		int sum = 0;
@@ -37,14 +43,21 @@ public class Grid {
 			{
 				for(int colValue = col - 1; colValue <= col + 1; colValue++)
 				{
-					
+					if(rowValue > 0 && rowValue < numRows && colValue > 0 && colValue < numCols)
+					{
+						if(matrix[rowValue][colValue].getState())
+						{
+							sum++;
+						}
+					}
 				}
 					
 			}
 		}
-		else
+		else 
 		{
 			System.out.println("There is a mine here!");
 		}
+		matrix[row][col].setLocationValue(sum);
 	}
 }

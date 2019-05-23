@@ -2,24 +2,26 @@ package minePackage;
 
 public class Grid {
 	//the static 2D array of Location objects
-	private static Location[][] matrix;
+	private static Location[][] arr;
 	//row size of minesweeper
 	private int numRows;
 	//col size of minesweeper, don't actually change the graphics size.
 	private int numCols; //should both equal 16
 	int numMines;
+	private int mouseX;
+	private int mouseY;
 	
 	public Grid(int numRows, int numCols,int numMines)
 	{
 		this.numRows = numRows; //numRows = 16
 		this.numCols = numCols;  //numCols = 16
 		this.numMines = numMines;   //numMines = 40
-		matrix = new Location[numRows][numCols];
+		arr = new Location[numRows][numCols];
 		for(int i = 0; i < numRows; i++)
 		{
 			for(int j = 0; j < numCols; j++)
 			{
-				matrix[i][j] = new Location();
+				arr[i][j] = new Location();
 			}
 		}
 		int randRow;
@@ -29,16 +31,19 @@ public class Grid {
 		{
 			randRow = (int)(Math.random() * numRows);
 			randCol = (int)(Math.random() * numCols);
-			matrix[randRow][randCol].setState(true);
+			arr[randRow][randCol].setState(true);
 		}
 	}
 	
-	
+	public Location[][] getArr()
+	{
+		return arr;
+	}
 	//computes and sets the value of each location by computing how many mines are near it
 	public void setLocalValue(int row, int col)
 	{
 		int sum = 0;
-		if(!matrix[row][col].getState())
+		if(!arr[row][col].getState())
 		{
 			for(int rowValue = row - 1; rowValue <= row + 1; rowValue++)
 			{
@@ -46,7 +51,7 @@ public class Grid {
 				{
 					if(rowValue > 0 && rowValue < numRows && colValue > 0 && colValue < numCols)
 					{
-						if(matrix[rowValue][colValue].getState())
+						if(arr[rowValue][colValue].getState())
 						{
 							sum++;
 						}
@@ -60,6 +65,6 @@ public class Grid {
 			//just a placeholder
 			System.out.println("There is a mine here!");
 		}
-		matrix[row][col].setLocationValue(sum);
+		arr[row][col].setLocationValue(sum);
 	}
 }

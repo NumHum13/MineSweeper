@@ -28,7 +28,7 @@ public class Location {
 		this.revealed = revealed;
 		if(revealed && state)
 		{
-			System.out.println("There is a mine here");
+			//System.out.println("There is a mine here");
 		}
 	}
 	public boolean getRevealed()

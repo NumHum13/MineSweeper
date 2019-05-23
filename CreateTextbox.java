@@ -12,7 +12,7 @@ import javax.swing.JPanel;
  */
 public class CreateTextbox extends JPanel{
 	public void paint(Graphics g){
-		g.drawString("Hello World", 10, 10);
+		g.drawString("Hello World", 100, 100);
 	}
 	
 	public static void main(String[] args){

@@ -8,34 +8,34 @@ public class MouseInput implements MouseListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		//System.out.println("Mouse Clicked");
 		// TODO Auto-generated method stub
 		
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		//Grid g = Main.g;
-		//g.registerClick(e.getX(), e.getY());
+	public void mousePressed(MouseEvent event) {
+		Ground game = MineSweeper.game;
+		//System.out.println("Mouse pressed. x = " + event.getX() + " y = " + event.getY());
+		game.mouseAt(event.getX(), event.getY());
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
+	public void mouseEntered(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
+	public void mouseExited(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
+	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		
 	}
-
 }

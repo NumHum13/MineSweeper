@@ -10,7 +10,7 @@ public class Location {
 	//what is the location's value
 	private int locationValue;
 	
-	//construtor, automatically does put any mines anywhere
+	//construtor, automatically doesn't lpace any mines
 	public Location()
 	{
 		state = false;
@@ -28,7 +28,7 @@ public class Location {
 		this.revealed = revealed;
 		if(revealed && state)
 		{
-			System.out.println("There is a mine here");
+			//System.out.println("There is a mine here");
 		}
 	}
 	public boolean getRevealed()

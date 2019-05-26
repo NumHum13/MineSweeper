@@ -56,6 +56,10 @@ public class Grid {
 	{
 		return arr;
 	}
+	public int getLocalValue(int row, int col)
+	{
+		return arr[row][col].getLocationValue();
+	}
 	//computes and sets the value of each location by computing how many mines are near it
 	public void setLocalValue(int row, int col)
 	{
@@ -66,7 +70,7 @@ public class Grid {
 			{
 				for(int colValue = col - 1; colValue <= col + 1; colValue++)
 				{
-					if(rowValue > 0 && rowValue < numRows && colValue > 0 && colValue < numCols)
+					if(rowValue >= 0 && rowValue < numRows && colValue >= 0 && colValue < numCols)
 					{
 						if(arr[rowValue][colValue].getState())
 						{

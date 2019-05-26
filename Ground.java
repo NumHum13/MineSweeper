@@ -4,12 +4,14 @@ package minePackage;
 //http://www.mathcs.emory.edu/~cheung/Courses/377/Syllabus/8-JDBC/GUI/activeComponents2.html
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import java.awt.Graphics;
 import java.awt.Color;
 import javax.swing.JTextField;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import javax.swing.ImageIcon;
 		//Need to create 256 squares
 class Ground extends JFrame
 {
@@ -32,6 +34,11 @@ class Ground extends JFrame
 		//Make JFrame visible
 		setVisible(true);
 	}
+	public void testIt()
+	{
+		ImageIcon icon = new ImageIcon();
+		JLabel label = new JLabel(icon);
+	}
 	public void showAll()
 	{
 		for (int i = 0; i < 16; i++)
@@ -45,8 +52,16 @@ class Ground extends JFrame
 				}
 				else
 				{
-					billy.setColor(Color.GRAY);
-					billy.fillRect((i * 40) + 50, (j * 40) + 80, 39, 39);
+					if((MineSweeper.g).getLocalValue(i, j) > 0)
+					{
+						billy.setColor(Color.WHITE);
+						billy.fillRect((i * 40) + 50, (j * 40) + 80, 39, 39);
+					}
+					else
+					{
+						billy.setColor(Color.GRAY);
+						billy.fillRect((i * 40) + 50, (j * 40) + 80, 39, 39);
+					}
 				}
 			}
 		}
@@ -54,6 +69,29 @@ class Ground extends JFrame
 	public void setArr(Location[][] arr)
 	{
 		this.arr = arr;
+	}
+	public void openFree(int row, int col)
+	{
+		System.out.println("openFree triggered");
+		if(!arr[row][col].getState())
+		{
+			for(int rowValue = row - 1; rowValue <= row + 1; rowValue++)
+			{
+				for(int colValue = col - 1; colValue <= col + 1; colValue++)
+				{
+					if(rowValue >= 0 && rowValue < 16 && colValue >= 0 && colValue < 16)
+					{
+						if(!arr[rowValue][colValue].getState() && arr[rowValue][colValue].getLocationValue() > 0)
+						{
+							System.out.println("openFree If triggered");
+							arr[rowValue][colValue].setRevealed(true);
+							billy.setColor(Color.GRAY);
+							billy.fillRect(50 + (rowValue * 40), 80 + (colValue * 40), 39, 39);
+						}
+					}
+				}
+			}
+		}
 	}
 	public void mouseAt(int xCoor, int yCoor)
 	{
@@ -72,11 +110,16 @@ class Ground extends JFrame
 			billy.setColor(Color.GRAY);
 			billy.fillRect(xCoor, yCoor, 39, 39);
 			(MineSweeper.g).placeMines();
-			//!!!!!!!!!!!!!!!!
-			//remove this to play game
-			showAll();
-			//remove this to play game
-			//!!!!!!!!!!!!!!!
+			openFree(x, y);
+			testIt();
+			
+			
+			
+	//!!!!!!!!!!!!!!!!
+	//remove this to play game
+			//showAll();
+	//remove this to play game
+	//!!!!!!!!!!!!!!!
 		}
 		else
 		{

@@ -1,6 +1,6 @@
 package minePackage;
 
-import java.awt.Color;
+//import java.awt.Color;
 
 /**
  * The main class of the program. Everything happens from here and can test everything out.

@@ -1,6 +1,8 @@
 package minePackage;
 
 public class Location {
+	private int row;
+	private int col;
 	//is there a mine here
 	private boolean state;
 	//has it been revealed by the player
@@ -10,10 +12,19 @@ public class Location {
 	//what is the location's value
 	private int locationValue;
 	
-	//construtor, automatically does put any mines anywhere
-	public Location()
+	//construtor, automatically doesn't lpace any mines
+	public Location(int row, int col)
 	{
-		state = false;
+		this.row = row;
+		this.col = col;
+	}
+	public int getRow()
+	{
+		return row;
+	}
+	public int getCol()
+	{
+		return col;
 	}
 	public void setState(boolean state)
 	{
@@ -26,10 +37,6 @@ public class Location {
 	public void setRevealed(boolean revealed)
 	{
 		this.revealed = revealed;
-		if(revealed && state)
-		{
-			System.out.println("There is a mine here");
-		}
 	}
 	public boolean getRevealed()
 	{

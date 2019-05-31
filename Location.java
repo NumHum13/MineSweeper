@@ -13,10 +13,9 @@ public class Location {
 	private int locationValue;
 	
 	//construtor, automatically doesn't lpace any mines
-	public Location(int row, int col)
+	public Location()
 	{
-		this.row = row;
-		this.col = col;
+		//ToDO
 	}
 	public int getRow()
 	{
@@ -37,6 +36,10 @@ public class Location {
 	public void setRevealed(boolean revealed)
 	{
 		this.revealed = revealed;
+		if(revealed)
+		{
+			
+		}
 	}
 	public boolean getRevealed()
 	{

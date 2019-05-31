@@ -22,9 +22,16 @@ class Ground extends JFrame
 	private static Location[][] arr;
 	private int x;
 	private int y;
+	private int xCoor;
+	private int yCoor;
 	private int sum = 1;
-	private ArrayList<Bundle> bundles = new ArrayList<Bundle>();
+	private int flags = 40;
+	private int minesLeft = 40;
 	
+	public Graphics getGraph()
+	{
+		return billy;
+	}
 	public Ground()
 	{
 		//to  Set JFrame title
@@ -42,66 +49,264 @@ class Ground extends JFrame
 	{
 		this.arr = arr;
 	}
-	
-	public void openFree(int row, int col)
+	public void openFree()
 	{
-		int totalLocation = 1;
-		if(!arr[row][col].getState())
-		{
-			//billy.setColor(Color.GRAY);
-			//billy.fillRect(row, col, 39, 39);
+		ArrayList<Bundle> bundles = new ArrayList<Bundle>();
+		int s = 0;
+		Location thisLocation = new Location();
+		if(checked(x-1,y)){
+			bundles.add(new Bundle(x-1, y));
+			s++;
 		}
-		bundles.add(new Bundle(row-1, col));
-		bundles.add(new Bundle(row, col-1));
-		bundles.add(new Bundle(row, col+1));
-		bundles.add(new Bundle(row+1, col));
-		totalLocation = 4;
-		
+		if(checked(x,y-1)){
+			bundles.add(new Bundle(x, y-1));
+			s++;
+		}
+		if(checked(x,y+1)) {
+			bundles.add(new Bundle(x, y+1));
+			s++;
+		}
+		if(checked(x+1,y)){
+			bundles.add(new Bundle(x+1, y));
+			s++;
+		}
+		for(int i=0;i<s;i++) 
+		{
+			Bundle high = new Bundle((bundles.get(i)).getRow(), (bundles.get(i)).getCol());
+			thisLocation = arr[high.getRow()][high.getCol()];
+			if(!thisLocation.getRevealed() && !thisLocation.getState() && !thisLocation.getMarked())
+			{
+				if(thisLocation.getLocationValue() == 0)
+				{
+					thisLocation.setRevealed(true);
+					//System.out.println("Alpha");
+					if(checked(high.getRow()-1,high.getCol())){
+						bundles.add(new Bundle(high.getRow()-1, high.getCol()));
+						s++;
+					}
+					//System.out.println("Beta");
+					if(checked(high.getRow(),high.getCol()-1)){
+						bundles.add(new Bundle(high.getRow(), high.getCol()-1));
+						s++;
+					}
+					if(checked(high.getRow(),high.getCol()+1)){
+						bundles.add(new Bundle(high.getRow(), high.getCol()+1));
+						s++;
+					}
+					if(checked(high.getRow()+1,high.getCol())){
+						bundles.add(new Bundle(high.getRow()+1, high.getCol()));
+						s++;
+					}
+					
+					if(checked(high.getRow()-1,high.getCol()-1)){
+						bundles.add(new Bundle(high.getRow()-1, high.getCol()-1));
+						s++;
+					}
+					if(checked(high.getRow()-1,high.getCol()+1)){
+						bundles.add(new Bundle(high.getRow()-1, high.getCol()+1));
+						s++;
+					}
+					if(checked(high.getRow()+1,high.getCol()-1)){
+						bundles.add(new Bundle(high.getRow()+1, high.getCol()-1));
+						s++;
+					}
+					if(checked(high.getRow()+1,high.getCol()-1)){
+						bundles.add(new Bundle(high.getRow()+1, high.getCol()-1));
+						s++;
+					}
+					if(checked(high.getRow()+1,high.getCol()+1)){
+						bundles.add(new Bundle(high.getRow()+1, high.getCol()+1));
+						s++;
+					}
+					billy.setColor(Color.GRAY);
+					billy.fillRect(xSet(high.getRow()), ySet(high.getCol()), 39, 39);
+					showValue(high.getRow(), high.getCol());
+					System.out.println("OpenFree IF");
+				}
+				else if(thisLocation.getLocationValue() >= 0)
+				{
+					billy.setColor(Color.GRAY);
+					/**
+					if(checked(high.getRow()-1,high.getCol()) && !arr[high.getRow()-1][high.getCol()].getState()){
+						arr[high.getRow()-1][high.getCol()].setRevealed(true);
+						billy.fillRect(xSet(high.getRow()-1), ySet(high.getCol()), 39, 39);
+						showValue(high.getRow()-1, high.getCol());
+					}
+					if(checked(high.getRow(),high.getCol()-1) && !arr[high.getRow()][high.getCol()-1].getState()){
+						arr[high.getRow()][high.getCol()-1].setRevealed(true);
+						billy.fillRect(xSet(high.getRow()), ySet(high.getCol()-1), 39, 39);
+						showValue(high.getRow(), high.getCol()-1);
+					}
+					if(checked(high.getRow(),high.getCol()+1) && !arr[high.getRow()][high.getCol()+1].getState()){
+						arr[high.getRow()][high.getCol()+1].setRevealed(true);
+						billy.fillRect(xSet(high.getRow()), ySet(high.getCol()+1), 39, 39);
+						showValue(high.getRow(), high.getCol()+1);
+					}
+					if(checked(high.getRow()+1,high.getCol()) && !arr[high.getRow()+1][high.getCol()].getState()){
+						arr[high.getRow()+1][high.getCol()].setRevealed(true);
+						billy.fillRect(xSet(high.getRow()+1), ySet(high.getCol()), 39, 39);
+						showValue(high.getRow()+1, high.getCol());
+					}
+					*/
+					thisLocation.setRevealed(true);
+					billy.fillRect(xSet(high.getRow()), ySet(high.getCol()), 39, 39);
+					showValue(high.getRow(), high.getCol());
+					System.out.println("OpenFree Else");
+				}
+			}
+		}
+	}
+	public void showValue(int numX, int numY)
+	{
+		//System.out.println("showValue");
+		int numXCoor = (numX * 40) + 50;
+		int numYCoor = (numY * 40) + 80;
+		int value = (MineSweeper.g).getLocalValue(numX, numY);
+		if(!(value == 0)) //if(value > 0)
+		{
+			String locationVal = String.valueOf(value);
+			billy.setColor(Color.RED);
+			billy.setFont(billy.getFont().deriveFont(40.0f));
+			billy.drawString(locationVal, numXCoor + 9, numYCoor + 35);
+			billy.setColor(Color.GRAY);
+		}
 		
 	}
-	public void mouseAt(int xCoor, int yCoor)
+	public boolean checked(int x, int y)
 	{
-		xCoor = ((xCoor - 50)/40) * 40 + 50;
-		yCoor = ((yCoor - 80)/40) * 40 + 80;
+		return (x>=0&&x<16&&y>=0&&y<16);
+	}
+	public int xSet(int rowed)
+	{
+		return (rowed * 40) + 50;
+	}
+	public int ySet(int coled)
+	{
+		return (coled * 40) + 80;
+	}
+	public void mouseAt(int xCoored, int yCoored, boolean click)
+	{
+		xCoor = ((xCoored - 50)/40) * 40 + 50;
+		yCoor = ((yCoored - 80)/40) * 40 + 80;
 		x = (xCoor- 50)/40;
 		y = (yCoor- 80)/40;
-		System.out.println("X is:" + xCoor + " Y is:" + yCoor);
-		//System.out.println("MouseAt");
-		System.out.println(x + " " + y);
-		arr[x][y].setRevealed(true);
-		if(sum == 1)
+		if(!click && !arr[x][y].getRevealed())
 		{
-			sum++;
-			System.out.println("First open");
-			billy.setColor(Color.GRAY);
-			billy.fillRect(xCoor, yCoor, 39, 39);
-			(MineSweeper.g).placeMines();
-			openFree(x, y);
-			
-			
-			
-	//!!!!!!!!!!!!!!!!
-	//remove this to play game
-			//showAll();
-	//remove this to play game
-	//!!!!!!!!!!!!!!!
-		}
-		else
-		{
-			if(arr[x][y].getState())
+			if(!arr[x][y].getMarked() && (flags >= 1))
 			{
+				arr[x][y].setMarked(true);
 				billy.setColor(Color.RED);
+				billy.fillArc(xCoor+6, yCoor-39, 60, 100, 170, 20);
+				billy.fillRect(xCoor+6, yCoor+5, 5, 30);
+				billy.fillRect(xCoor+4, yCoor+30, 10, 5);
+				flags--;
+				billy.fillArc(280, 690, 60, 100, 170, 20);
+				billy.fillRect(280, 734, 5, 30);
+				billy.fillRect(278, 759, 10, 5);
+				billy.setColor(Color.lightGray);
+				billy.clearRect(225, 723, 40, 40);
+				billy.setColor(Color.BLACK);
+				billy.setFont(billy.getFont().deriveFont(30.0f));
+				billy.drawString(String.valueOf(flags), 230, 760);
+				billy.setColor(Color.GREEN);
+				if(arr[x][y].getMarked() && arr[x][y].getState())
+				{
+					minesLeft--;
+				}
+				System.out.println(minesLeft);
+				if(minesLeft == 0)
+				{
+					billy.setColor(Color.BLACK);
+					billy.fillRect(125, 320, 505, 85);
+					billy.setColor(Color.MAGENTA);
+					billy.setFont(billy.getFont().deriveFont(100.0f));
+					billy.drawString("You Won!!!", 130, 400);
+				}
+			}
+			else if((flags > 0) || arr[x][y].getMarked())
+			{
+				if(arr[x][y].getMarked() && arr[x][y].getState())
+				{
+					minesLeft++;
+				}
+				System.out.println(minesLeft);
+				arr[x][y].setMarked(false);
+				billy.setColor(Color.GREEN);
 				billy.fillRect(xCoor, yCoor, 39, 39);
-				System.out.println("There is a mine here");
+				flags++;
+				billy.setColor(Color.RED);
+				billy.fillArc(280, 690, 60, 100, 170, 20);
+				billy.fillRect(280, 734, 5, 30);
+				billy.fillRect(278, 759, 10, 5);
+				billy.setColor(Color.lightGray);
+				billy.clearRect(225, 723, 40, 40);
+				billy.setColor(Color.BLACK);
+				billy.setFont(billy.getFont().deriveFont(30.0f));
+				billy.drawString(String.valueOf(flags), 230, 760);
+				billy.setColor(Color.GREEN);
+			}
+		}
+		if(click && !arr[x][y].getMarked())
+		{
+			//System.out.println(checked(10,16));
+			//System.out.println(checked(16,10));
+			//System.out.println(checked(-1,10));
+			//System.out.println(checked(10,-1));
+			//System.out.println("X is:" + xCoor + " Y is:" + yCoor);
+			//System.out.println("MouseAt");
+			//System.out.println(x + " " + y);
+			if(sum == 1)
+			{
+				arr[x][y].setRevealed(true);
+				sum++;
+				System.out.println("First open");
+				billy.setColor(Color.GRAY);
+				billy.fillRect(xCoor, yCoor, 39, 39);
+				(MineSweeper.g).placeMines();
+				openFree();
+				showValue(x, y);
+				
+				
+				
+		//!!!!!!!!!!!!!!!!
+		//remove this to play game
+				//showAll();
+		//remove this to play game
+		//!!!!!!!!!!!!!!!
+			}
+			else if(sum == 0)
+			{
+				System.exit(0);
 			}
 			else
 			{
-				billy.setColor(Color.GRAY);
-				billy.fillRect(xCoor, yCoor, 39, 39);
+				if(arr[x][y].getState())
+				{
+					arr[x][y].setRevealed(true);
+					billy.setColor(Color.RED);
+					billy.fillRect(xCoor, yCoor, 39, 39);
+					//billy.fillArc(xCoor, yCoor, 30, 30, 18, 50);
+					billy.setColor(Color.BLACK);
+					billy.fillRect(125, 322, 485, 85);
+					billy.setColor(Color.RED);
+					billy.setFont(billy.getFont().deriveFont(100.0f));
+					billy.drawString("Gameover", 135, 400);
+					billy.setColor(Color.RED);
+					//billy.setFont(billy.getFont().deriveFont(40.0f));
+					//billy.drawString("3", 50 + 9, 80 + 35);
+					sum = 0;
+				}
+				else if(!arr[x][y].getRevealed())
+				{
+					arr[x][y].setRevealed(true);
+					billy.setColor(Color.GRAY);
+					billy.fillRect(xCoor, yCoor, 39, 39);
+					showValue((xCoor-50)/40,(yCoor-80)/40);
+					openFree();
+				}
 			}
 		}
 	}
-	
 	public void paint(Graphics g)
 	{
 		super.paint(g);
@@ -120,8 +325,26 @@ class Ground extends JFrame
 		}
 		//billy.setColor(Color.GRAY);
 		//billy.fillRect(50, 80, 39, 39);
-		billy.setFont(billy.getFont().deriveFont(18.0f));
-		billy.drawString("MineSweeper", 340, 50);
+		billy.setFont(billy.getFont().deriveFont(30.0f));
+		billy.drawString("MineSweeper", 280, 70);
+		g.setColor(Color.RED);
+		g.fillArc(280, 690, 60, 100, 170, 20);
+		g.fillRect(280, 734, 5, 30);
+		g.fillRect(278, 759, 10, 5);
+		billy.drawString("Flags Left", 315, 760);
+		billy.drawString(String.valueOf(flags), 230, 760);
+		//billy.setColor(Color.BLACK);
+		//billy.fillRect(125, 320, 505, 85);
+		//billy.setColor(Color.MAGENTA);
+		//billy.setFont(billy.getFont().deriveFont(100.0f));
+		//billy.drawString("You Won!!!", 130, 400);
+		//g.setColor(Color.lightGray);
+		//g.clearRect(225, 723, 40, 40);
+		//billy.setColor(Color.BLACK);
+		//billy.fillRect(125, 322, 485, 85);
+		//billy.setColor(Color.RED);
+		//billy.setFont(billy.getFont().deriveFont(100.0f));
+		//billy.drawString("Gameover", 135, 400);
 	}
 		
 	public static void main(String[]args)
@@ -172,3 +395,5 @@ class Ground extends JFrame
 		}
 	}
 }
+
+

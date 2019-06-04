@@ -4,6 +4,8 @@ package minePackage;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import javax.swing.SwingUtilities;
+
 public class MouseInput implements MouseListener {
 
 	@Override
@@ -18,7 +20,16 @@ public class MouseInput implements MouseListener {
 	public void mousePressed(MouseEvent event) {
 		Ground game = MineSweeper.game;
 		//System.out.println("Mouse pressed. x = " + event.getX() + " y = " + event.getY());
-		game.mouseAt(event.getX(), event.getY());
+		if(SwingUtilities.isLeftMouseButton(event))
+		{
+			System.out.println("Left Clicked");
+			game.mouseAt(event.getX(), event.getY(), true);
+		}
+		else if(SwingUtilities.isRightMouseButton(event))
+		{
+			System.out.println("Right Clicked");
+			game.mouseAt(event.getX(), event.getY(), false);
+		}
 	}
 
 	@Override

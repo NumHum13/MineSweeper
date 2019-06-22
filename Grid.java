@@ -21,7 +21,7 @@ public class Grid {
 		{
 			for(int j = 0; j < numCols; j++)
 			{
-				arr[i][j] = new Location(i, j);
+				arr[i][j] = new Location();
 			}
 		}
 	}

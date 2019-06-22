@@ -18,4 +18,3 @@ public class Bundle {
 		return col;
 	}
 }
-

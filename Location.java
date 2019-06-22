@@ -1,5 +1,11 @@
 package minePackage;
 
+import java.io.File;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineEvent.Type.*; 
+
 public class Location {
 	private int row;
 	private int col;
@@ -13,10 +19,9 @@ public class Location {
 	private int locationValue;
 	
 	//construtor, automatically doesn't lpace any mines
-	public Location(int row, int col)
+	public Location()
 	{
-		this.row = row;
-		this.col = col;
+		//ToDo
 	}
 	public int getRow()
 	{
@@ -37,6 +42,7 @@ public class Location {
 	public void setRevealed(boolean revealed)
 	{
 		this.revealed = revealed;
+		(MineSweeper.game).setSpacesLeft();
 	}
 	public boolean getRevealed()
 	{
